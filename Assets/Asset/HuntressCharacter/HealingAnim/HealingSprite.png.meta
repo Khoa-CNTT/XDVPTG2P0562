@@ -1,0 +1,520 @@
+fileFormatVersion: 2
+guid: 5f825259b489cda4ba5bedd66933758d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 458814629263972286
+    second: HealingSprite_0
+  - first:
+      213: -1386110083272528585
+    second: HealingSprite_1
+  - first:
+      213: -2676667272319858956
+    second: HealingSprite_2
+  - first:
+      213: -7418304355075122221
+    second: HealingSprite_3
+  - first:
+      213: -1542370761460770714
+    second: HealingSprite_4
+  - first:
+      213: -4241320482385716683
+    second: HealingSprite_5
+  - first:
+      213: -4865997274521372026
+    second: HealingSprite_6
+  - first:
+      213: -133702028029658128
+    second: HealingSprite_7
+  - first:
+      213: -1964775324296380228
+    second: HealingSprite_8
+  - first:
+      213: -5120764793952323917
+    second: HealingSprite_9
+  - first:
+      213: 6831938398691055528
+    second: HealingSprite_10
+  - first:
+      213: 6289664902670652916
+    second: HealingSprite_11
+  - first:
+      213: -50783255866647793
+    second: HealingSprite_12
+  - first:
+      213: -486455189150927588
+    second: HealingSprite_13
+  - first:
+      213: 7743301596182989580
+    second: HealingSprite_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: HealingSprite_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 15
+        width: 16
+        height: 41
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb7180379790e5600800000000000000
+      internalID: 458814629263972286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HealingSprite_1
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 15
+        width: 17
+        height: 41
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73d24f2293c83cce0800000000000000
+      internalID: -1386110083272528585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HealingSprite_2
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 13
+        width: 32
+        height: 48
+      alignment: 9
+      pivot: {x: 0.5001764, y: 0.43640384}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f606732c419adad0800000000000000
+      internalID: -2676667272319858956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HealingSprite_3
+      rect:
+        serializedVersion: 2
+        x: 492
+        y: 12
+        width: 41
+        height: 53
+      alignment: 9
+      pivot: {x: 0.5, y: 0.4076354}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3db93003e73ec0990800000000000000
+      internalID: -7418304355075122221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HealingSprite_4
+      rect:
+        serializedVersion: 2
+        x: 644
+        y: 15
+        width: 34
+        height: 47
+      alignment: 9
+      pivot: {x: 0.46339506, y: 0.43380153}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6689e2bd6f5689ae0800000000000000
+      internalID: -1542370761460770714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HealingSprite_5
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 15
+        width: 25
+        height: 41
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53a9fc42e7dc325c0800000000000000
+      internalID: -4241320482385716683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HealingSprite_6
+      rect:
+        serializedVersion: 2
+        x: 795
+        y: 52
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68a722e8241887cb0800000000000000
+      internalID: -4865997274521372026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HealingSprite_7
+      rect:
+        serializedVersion: 2
+        x: 810
+        y: 54
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fbfa81c6bef42ef0800000000000000
+      internalID: -133702028029658128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HealingSprite_8
+      rect:
+        serializedVersion: 2
+        x: 945
+        y: 15
+        width: 17
+        height: 41
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb08cdb9047bbb4e0800000000000000
+      internalID: -1964775324296380228
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HealingSprite_9
+      rect:
+        serializedVersion: 2
+        x: 788
+        y: 39
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b635260d836fe8b0800000000000000
+      internalID: -5120764793952323917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HealingSprite_10
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 32
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a7d455c6cbefce50800000000000000
+      internalID: 6831938398691055528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HealingSprite_11
+      rect:
+        serializedVersion: 2
+        x: 814
+        y: 35
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f51de7a7e0694750800000000000000
+      internalID: 6289664902670652916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HealingSprite_12
+      rect:
+        serializedVersion: 2
+        x: 787
+        y: 28
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0bd789d5e49b4ff0800000000000000
+      internalID: -50783255866647793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HealingSprite_13
+      rect:
+        serializedVersion: 2
+        x: 793
+        y: 23
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1573833593cf39f0800000000000000
+      internalID: -486455189150927588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HealingSprite_14
+      rect:
+        serializedVersion: 2
+        x: 815
+        y: 24
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0bc335a6cbb57b60800000000000000
+      internalID: 7743301596182989580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: b3769c6f76544df45b638ffd4ff22c8f
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      HealingSprite_0: 458814629263972286
+      HealingSprite_1: -1386110083272528585
+      HealingSprite_10: 6831938398691055528
+      HealingSprite_11: 6289664902670652916
+      HealingSprite_12: -50783255866647793
+      HealingSprite_13: -486455189150927588
+      HealingSprite_14: 7743301596182989580
+      HealingSprite_2: -2676667272319858956
+      HealingSprite_3: -7418304355075122221
+      HealingSprite_4: -1542370761460770714
+      HealingSprite_5: -4241320482385716683
+      HealingSprite_6: -4865997274521372026
+      HealingSprite_7: -133702028029658128
+      HealingSprite_8: -1964775324296380228
+      HealingSprite_9: -5120764793952323917
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
