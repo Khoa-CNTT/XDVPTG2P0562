@@ -1,36 +1,31 @@
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class Bonfire : MonoBehaviour
 {
     [Header("Bonfire Settings")]
-    [SerializeField] private Transform respawnPoint; // Vị trí hồi sinh
-    [SerializeField] private GameObject interactPrompt; // UI nhắc nhở tương tác
-    [SerializeField] private ParticleSystem bonfireEffect; // Hiệu ứng lửa
-    [SerializeField] private AudioClip bonfireSound; // Âm thanh khi kích hoạt
+    [SerializeField] private Transform respawnPoint;
+    [SerializeField] private GameObject interactPrompt;
+    [SerializeField] private ParticleSystem bonfireEffect;
+    [SerializeField] private AudioClip bonfireSound;
 
-    private bool isActivated = false; // Kiểm tra Bonfire đã được kích hoạt chưa
-    private bool isInteracting = false; // Kiểm tra người chơi đang tương tác
+    private bool isActivated = false;
+    private bool isInteracting = false;
     private AudioSource audioSource;
 
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
-
-        // Ẩn UI nhắc nhở ban đầu
-        if (interactPrompt != null)
-            interactPrompt.SetActive(false);
+        if (interactPrompt != null) interactPrompt.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && !isActivated)
         {
-            // Hiển thị UI nhắc nhở tương tác
-            if (interactPrompt != null)
-                interactPrompt.SetActive(true);
-
-            // Bắt đầu theo dõi tương tác
+            if (interactPrompt != null) interactPrompt.SetActive(true);
             isInteracting = true;
         }
     }
@@ -39,81 +34,70 @@ public class Bonfire : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            // Ẩn UI nhắc nhở tương tác
-            if (interactPrompt != null)
-                interactPrompt.SetActive(false);
-
-            // Dừng theo dõi tương tác
+            if (interactPrompt != null) interactPrompt.SetActive(false);
             isInteracting = false;
         }
     }
 
     private void Update()
     {
-        // Kiểm tra nếu người chơi đang trong vùng tương tác và nhấn phím E
         if (isInteracting && !isActivated && Input.GetKeyDown(KeyCode.E))
         {
-            // Lấy component HealthSystem và PlayerRespawn từ nhân vật
-            HealthSystem healthSystem = GameObject.FindGameObjectWithTag("Player").GetComponent<HealthSystem>();
-            PlayerRespawn playerRespawn = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerRespawn>();
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player == null) return;
 
-            if (healthSystem == null || playerRespawn == null)
+            var healthSystem = player.GetComponent<HealthSystem>();
+            var potionSystem = player.GetComponent<HealthPotionSystem>();
+            var respawnSystem = player.GetComponent<PlayerRespawn>();
+
+            if (healthSystem == null || potionSystem == null || respawnSystem == null)
             {
-                Debug.LogError("HealthSystem or PlayerRespawn component not found on player!");
+                Debug.LogError("Không tìm thấy HealthSystem, PotionSystem hoặc RespawnSystem!");
                 return;
             }
 
-            // Kích hoạt Bonfire
-            ActivateBonfire(healthSystem, playerRespawn);
+            ActivateBonfire(player.transform.position, healthSystem, potionSystem, respawnSystem);
         }
     }
 
-    private void ActivateBonfire(HealthSystem healthSystem, PlayerRespawn playerRespawn)
+    private void ActivateBonfire(Vector2 playerPos, HealthSystem health, HealthPotionSystem potions, PlayerRespawn respawn)
     {
         isActivated = true;
 
-        // Kích hoạt hiệu ứng lửa
-        if (bonfireEffect != null)
-            bonfireEffect.Play();
+        if (bonfireEffect != null) bonfireEffect.Play();
+        if (bonfireSound != null && audioSource != null) audioSource.PlayOneShot(bonfireSound);
 
-        // Phát âm thanh
-        if (bonfireSound != null && audioSource != null)
+        // Gán điểm hồi sinh
+        respawn.SetRespawnPosition(respawnPoint.position);
+
+        // Hồi máu đầy
+        health.HealToFull();
+
+        // Lưu game
+        string saveFolder = PlayerPrefs.GetString("CurrentSaveFolder", "");
+        if (!string.IsNullOrEmpty(saveFolder))
         {
-            audioSource.PlayOneShot(bonfireSound);
+            PlayerData playerData = new PlayerData
+            {
+                PositionX = playerPos.x,
+                PositionY = playerPos.y,
+                CurrentHP = health.currentHealth,
+                PotionCount = potions.GetCurrentPotionCount()
+            };
+
+            List<InventoryItemData> inventory = InventoryManager.Instance?.GetAllAsSaveData() ?? new();
+            int money = GameManager.Instance?.CurrentMoney ?? 0;
+
+            SaveManager.SaveGame(saveFolder, playerData, inventory, money);
+            Debug.Log($"💾 Game saved at bonfire → {saveFolder}");
         }
 
-        // Đặt vị trí hồi sinh cho nhân vật
-        playerRespawn.SetRespawnPosition(respawnPoint.position);
-        Debug.Log("Respawn position set to: " + respawnPoint.position);
-
-        // Lưu vị trí checkpoint vào PlayerPrefs
-        PlayerPrefs.SetFloat("CheckpointX", respawnPoint.position.x);
-        PlayerPrefs.SetFloat("CheckpointY", respawnPoint.position.y);
-        PlayerPrefs.Save(); // Lưu dữ liệu ngay lập tức
-
-        // Lưu vị trí camera vào PlayerPrefs
-        SmoothCamera smoothCamera = Camera.main.GetComponent<SmoothCamera>();
-        if (smoothCamera != null)
-        {
-            smoothCamera.SaveCameraPosition();
-        }
-
-        // Hồi máu cho nhân vật
-        healthSystem.HealToFull();
-        Debug.Log("Player healed to full health!");
-
-        // Reset lại scene (tùy chọn)
         ResetScene();
-
-        Debug.Log("Bonfire activated!");
     }
 
-    // Hàm reset lại scene
     private void ResetScene()
     {
-        // Lấy tên scene hiện tại
-        string currentSceneName = SceneManager.GetActiveScene().name;
-        // Tải lại scene
-        SceneManager.LoadScene(currentSceneName);
+        string scene = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(scene);
     }
 }

@@ -1,36 +1,78 @@
 using UnityEngine;
 using TMPro;
+using System.IO;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System;
 
-public class SaveSlotUI : MonoBehaviour
+public class SaveSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    [Header("References")]
+    [Header("Text UI")]
+    [SerializeField] private TMP_Text folderNameText;
     [SerializeField] private TMP_Text playerNameText;
-    [SerializeField] private TMP_Text createdAtText;
-    [SerializeField] private TMP_Text playTimeText;
+    [SerializeField] private TMP_Text createdTimeText;
 
-    public void Initialize(SaveData save)
+    [Header("Background UI")]
+    [SerializeField] private Image backgroundImage;
+    [SerializeField] private Color normalColor = Color.white;
+    [SerializeField] private Color hoverColor = new Color(0.8f, 0.8f, 1f);
+
+    private string saveFolderPath;
+
+    public void SetSaveFolder(string path)
     {
-        // Kiểm tra null
-        if (playerNameText == null || createdAtText == null || playTimeText == null)
-        {
-            Debug.LogError("UI References chưa được gán!", this);
-            return;
-        }
+        saveFolderPath = path;
 
-        // Hiển thị thông tin
-        playerNameText.text = string.IsNullOrEmpty(save.PlayerName) ? "No Name" : save.PlayerName;
-        
-        if (DateTime.TryParse(save.CreatedAt, out DateTime date))
+        // Hiển thị tên thư mục
+        string folderName = Path.GetFileName(path);
+        if (folderNameText != null)
+            folderNameText.text = folderName;
+
+        // Lấy thông tin từ database
+        var info = SaveManager.GetSaveInfo(path);
+        if (info.HasValue)
         {
-            createdAtText.text = date.ToLocalTime().ToString("HH:mm dd/MM/yyyy");
+            if (playerNameText != null)
+                playerNameText.text = $"Name: {info.Value.playerName}";
+
+            if (createdTimeText != null)
+                createdTimeText.text = $"Created: {info.Value.createdAt:dd/MM/yyyy HH:mm}";
         }
         else
         {
-            createdAtText.text = "Invalid Date";
+            if (playerNameText != null)
+                playerNameText.text = "Name: ???";
+
+            if (createdTimeText != null)
+                createdTimeText.text = "Created: none";
         }
 
-        TimeSpan time = TimeSpan.FromSeconds(save.PlayTime);
-        playTimeText.text = $"{time.Hours:D2}h {time.Minutes:D2}m";
+        if (backgroundImage != null)
+            backgroundImage.color = normalColor;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (backgroundImage != null)
+            backgroundImage.color = hoverColor;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (backgroundImage != null)
+            backgroundImage.color = normalColor;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (string.IsNullOrEmpty(saveFolderPath)) return;
+
+        Debug.Log($"📂 Loading game from: {saveFolderPath}");
+        GameLoader.LoadGame(saveFolderPath);
+    }
+
+    public string GetSaveFolderPath()
+    {
+        return saveFolderPath;
     }
 }

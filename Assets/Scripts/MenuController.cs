@@ -3,16 +3,20 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System.IO;
 
 public class MenuController : MonoBehaviour
 {
+    [Header("New Game Settings")]
     [SerializeField] private GameObject newGamePanel;
     [SerializeField] private TMP_InputField nameInputField;
+
+    [Header("Load Game Settings")]
     [SerializeField] private GameObject loadGamePanel;
     [SerializeField] private Transform saveListContent;
     [SerializeField] private GameObject saveSlotPrefab;
-    private List<SaveSlotUI> activeSlots = new List<SaveSlotUI>();
 
+    private List<GameObject> activeSlots = new List<GameObject>();
 
     private void Awake()
     {
@@ -35,12 +39,15 @@ public class MenuController : MonoBehaviour
             return;
         }
 
-        // Tạo save mới và chuyển scene
-        int saveId = SaveManager.Instance.CreateSave(playerName);
-        if (saveId != -1)
+        string saveFolder = SaveManager.CreateNewSaveFolder(playerName);
+        if (!string.IsNullOrEmpty(saveFolder))
         {
-            PlayerPrefs.SetInt("CurrentSaveId", saveId);
+            PlayerPrefs.SetString("CurrentSaveFolder", saveFolder);
             SceneManager.LoadScene("GameScene");
+        }
+        else
+        {
+            Debug.LogError("Không thể tạo thư mục lưu mới!");
         }
     }
 
@@ -50,36 +57,38 @@ public class MenuController : MonoBehaviour
         RefreshSaveList();
     }
 
-
-      public void RefreshSaveList()
+    public void RefreshSaveList()
     {
-        // Xóa slot cũ an toàn
-        foreach (var slot in activeSlots)
+        foreach (var obj in activeSlots)
         {
-            if (slot != null) Destroy(slot.gameObject);
+            Destroy(obj);
         }
         activeSlots.Clear();
 
-        // Tải danh sách mới
-        var saves = SaveManager.Instance.GetAllSaves();
-        
-        foreach (var save in saves)
-        {
-            var slotObj = Instantiate(saveSlotPrefab, saveListContent);
-            var slotUI = slotObj.GetComponent<SaveSlotUI>();
-            
-            if (slotUI == null)
-            {
-                Debug.LogError("Prefab thiếu component!", slotObj);
-                continue;
-            }
+        var saves = SaveManager.GetAllSaveFolders();
 
-            slotUI.Initialize(save);
-            activeSlots.Add(slotUI);
-            
-            Debug.Log($"Đã tạo slot cho: {save.PlayerName} (ID: {save.Id})");
+        foreach (var path in saves)
+        {
+            GameObject slot = Instantiate(saveSlotPrefab, saveListContent);
+            SaveSlotUI ui = slot.GetComponent<SaveSlotUI>();
+
+            if (ui != null)
+                ui.SetSaveFolder(path);
+
+            Button btn = slot.GetComponent<Button>();
+            if (btn != null)
+                btn.onClick.AddListener(() => LoadSelectedGame(path));
+
+            activeSlots.Add(slot);
         }
     }
+
+    private void LoadSelectedGame(string folderPath)
+    {
+        PlayerPrefs.SetString("CurrentSaveFolder", folderPath);
+        SceneManager.LoadScene("GameScene");
+    }
+
     public void CancelNewGame()
     {
         newGamePanel.SetActive(false);

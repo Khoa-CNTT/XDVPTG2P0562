@@ -1,134 +1,274 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Mono.Data.Sqlite;
-using System.Data;
 using UnityEngine;
 
-public class SaveManager : IDisposable
+public static class SaveManager
 {
-    private static SaveManager _instance;
-    public static SaveManager Instance => _instance ??= new SaveManager();
-
-    private string _connectionString;
-
-    private SaveManager()
+    public static string CreateNewSaveFolder(string playerName)
     {
-        InitializeDatabase();
-    }
+        string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+        string saveFolder = Path.Combine(Application.persistentDataPath, $"Save_{timestamp}_{playerName}");
+        Directory.CreateDirectory(saveFolder);
 
-    private void InitializeDatabase()
-    {
-        _connectionString = $"URI=file:{Application.persistentDataPath}/save_data.db";
-        
-        using (var conn = new SqliteConnection(_connectionString))
+        string dbPath = Path.Combine(saveFolder, "save_data.db");
+        string connectionString = $"URI=file:{dbPath}";
+
+        using (var conn = new SqliteConnection(connectionString))
         {
             conn.Open();
-            
             using (var cmd = conn.CreateCommand())
             {
                 cmd.CommandText = @"
-                    CREATE TABLE IF NOT EXISTS saves (
-                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        PlayerName TEXT NOT NULL,
-                        CreatedAt TEXT NOT NULL,
-                        PlayTime REAL DEFAULT 0
-                    );";
+                    CREATE TABLE IF NOT EXISTS save_info (
+                        PlayerName TEXT,
+                        CreatedAt TEXT
+                    );
+                   CREATE TABLE IF NOT EXISTS player_data (
+                    PositionX REAL,
+                    PositionY REAL,
+                    CurrentHP INTEGER,
+                    PotionCount INTEGER
+                    );
+                    CREATE TABLE IF NOT EXISTS inventory_items (
+                        ItemID TEXT,
+                        Quantity INTEGER
+                    );
+                    CREATE TABLE IF NOT EXISTS money_data (
+                        Amount INTEGER
+                    );
+                    CREATE TABLE IF NOT EXISTS equipped_items (
+                        Slot TEXT,
+                        ItemID TEXT
+                    );
+                    CREATE TABLE IF NOT EXISTS potion_data (
+                    PotionCount INTEGER
+                    );
+                    DELETE FROM save_info;
+                    INSERT INTO save_info (PlayerName, CreatedAt)
+                    VALUES (@name, @created);";
+
+                cmd.Parameters.AddWithValue("@name", playerName);
+                cmd.Parameters.AddWithValue("@created", DateTime.Now.ToString("o")); // ISO 8601
                 cmd.ExecuteNonQuery();
             }
-            
-            conn.Close();
         }
+
+        return saveFolder;
     }
 
-    public int CreateSave(string playerName)
-{
-    try
+    public static void SaveGame(string saveFolder, PlayerData playerData, List<InventoryItemData> inventory, int money)
     {
-        using (var conn = new SqliteConnection(_connectionString))
+        string dbPath = Path.Combine(saveFolder, "save_data.db");
+        string connectionString = $"URI=file:{dbPath}";
+
+        using (var conn = new SqliteConnection(connectionString))
         {
             conn.Open();
-            
-            // Bắt đầu transaction
-            using (var transaction = conn.BeginTransaction())
+            using (var cmd = conn.CreateCommand())
             {
-                using (var cmd = conn.CreateCommand())
+                // Player data
+                cmd.CommandText = "DELETE FROM player_data;";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "INSERT INTO player_data (PositionX, PositionY, CurrentHP, PotionCount) VALUES (@x, @y, @hp, @potions);";
+                cmd.Parameters.AddWithValue("@x", playerData.PositionX);
+                cmd.Parameters.AddWithValue("@y", playerData.PositionY);
+                cmd.Parameters.AddWithValue("@hp", playerData.CurrentHP);
+                cmd.Parameters.AddWithValue("@potions", playerData.PotionCount);
+                cmd.ExecuteNonQuery();
+
+                // Inventory
+                cmd.CommandText = "DELETE FROM inventory_items;";
+                cmd.ExecuteNonQuery();
+                foreach (var item in inventory)
                 {
-                    cmd.CommandText = @"
-                        INSERT INTO saves (PlayerName, CreatedAt, PlayTime)
-                        VALUES (@name, @date, 0);
-                        SELECT last_insert_rowid();";
-                    
-                    cmd.Parameters.AddWithValue("@name", playerName);
-                    cmd.Parameters.AddWithValue("@date", DateTime.UtcNow.ToString("o"));
-                    
-                    int newId = Convert.ToInt32(cmd.ExecuteScalar());
-                    transaction.Commit(); // Quan trọng: Xác nhận ghi dữ liệu
-                    
-                    Debug.Log($"Đã tạo save ID: {newId}");
-                    return newId;
+                    cmd.CommandText = "INSERT INTO inventory_items (ItemID, Quantity) VALUES (@itemID, @quantity);";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@itemID", item.ItemID);
+                    cmd.Parameters.AddWithValue("@quantity", item.Quantity);
+                    cmd.ExecuteNonQuery();
                 }
+
+                // Money
+                cmd.CommandText = "DELETE FROM money_data;";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "INSERT INTO money_data (Amount) VALUES (@amount);";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@amount", money);
+                cmd.ExecuteNonQuery();
             }
         }
     }
-    catch (Exception ex)
-    {
-        Debug.LogError($"Lỗi tạo save: {ex}");
-        return -1;
-    }
-}
 
-public List<SaveData> GetAllSaves()
-{
-    var saves = new List<SaveData>();
-    
-    using (var conn = new SqliteConnection(_connectionString))
+    public static void LoadGame(string saveFolder, out PlayerData playerData, out List<InventoryItemData> inventory, out int money)
     {
-        conn.Open();
-        
-        using (var cmd = conn.CreateCommand())
+        playerData = new PlayerData();
+        inventory = new List<InventoryItemData>();
+        money = 0;
+
+        string dbPath = Path.Combine(saveFolder, "save_data.db");
+        string connectionString = $"URI=file:{dbPath}";
+
+        using (var conn = new SqliteConnection(connectionString))
         {
-            cmd.CommandText = @"
-                SELECT Id, PlayerName, CreatedAt, PlayTime 
-                FROM saves 
-                ORDER BY Id DESC"; // Sắp xếp theo ID mới nhất
-            
-            using (var reader = cmd.ExecuteReader())
+            conn.Open();
+            using (var cmd = conn.CreateCommand())
             {
-                while (reader.Read())
+                // Player data
+                cmd.CommandText = "SELECT PositionX, PositionY, CurrentHP, PotionCount FROM player_data LIMIT 1;";
+                using (var reader = cmd.ExecuteReader())
                 {
-                    try
+                    if (reader.Read())
                     {
-                        saves.Add(new SaveData
+                        playerData.PositionX = reader.GetFloat(0);
+                        playerData.PositionY = reader.GetFloat(1);
+                        playerData.CurrentHP = reader.GetInt32(2);
+                        playerData.PotionCount = reader.GetInt32(3);
+                    }
+                }
+
+                // Inventory
+                cmd.CommandText = "SELECT ItemID, Quantity FROM inventory_items;";
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        inventory.Add(new InventoryItemData
                         {
-                            Id = reader.GetInt32(0),
-                            PlayerName = reader[1].ToString(),
-                            CreatedAt = reader[2].ToString(),
-                            PlayTime = Convert.ToSingle(reader[3])
+                            ItemID = reader.GetString(0),
+                            Quantity = reader.GetInt32(1)
                         });
                     }
-                    catch (Exception ex)
+                }
+
+                // Money
+                cmd.CommandText = "SELECT Amount FROM money_data LIMIT 1;";
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
                     {
-                        Debug.LogError($"Lỗi đọc save: {ex}");
+                        money = reader.GetInt32(0);
                     }
                 }
             }
         }
     }
-    
-    Debug.Log($"Tìm thấy {saves.Count} saves");
-    return saves;
-}
-        public void Dispose()
-    {
-        _instance = null;
-    }
-}
 
-[System.Serializable]
-public class SaveData
-{
-    public int Id;
-    public string PlayerName;
-    public string CreatedAt;
-    public float PlayTime;
+    public static void SaveEquippedItems(string saveFolder, Dictionary<string, string> equipped)
+    {
+        string dbPath = Path.Combine(saveFolder, "save_data.db");
+        string connectionString = $"URI=file:{dbPath}";
+
+        using (var conn = new SqliteConnection(connectionString))
+        {
+            conn.Open();
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "DELETE FROM equipped_items;";
+                cmd.ExecuteNonQuery();
+
+                foreach (var kvp in equipped)
+                {
+                    cmd.CommandText = "INSERT INTO equipped_items (Slot, ItemID) VALUES (@slot, @itemID);";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@slot", kvp.Key);
+                    cmd.Parameters.AddWithValue("@itemID", kvp.Value);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+    }
+
+
+
+    public static Dictionary<string, string> LoadEquippedItems(string saveFolder)
+    {
+        var result = new Dictionary<string, string>();
+
+        string dbPath = Path.Combine(saveFolder, "save_data.db");
+        string connectionString = $"URI=file:{dbPath}";
+
+        using (var conn = new SqliteConnection(connectionString))
+        {
+            conn.Open();
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "SELECT Slot, ItemID FROM equipped_items;";
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string slot = reader.GetString(0);
+                        string itemID = reader.GetString(1);
+                        result[slot] = itemID;
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public static List<string> GetAllSaveFolders()
+    {
+        string[] dirs = Directory.GetDirectories(Application.persistentDataPath, "Save_*");
+        return new List<string>(dirs);
+    }
+
+    public static void SaveInventory(string path, List<InventoryItemData> items)
+    {
+        string connStr = $"URI=file:{path}/save_data.db";
+
+        using (var conn = new SqliteConnection(connStr))
+        {
+            conn.Open();
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "DELETE FROM inventory_items;";
+                cmd.ExecuteNonQuery();
+
+                foreach (var i in items)
+                {
+                    cmd.CommandText = "INSERT INTO inventory_items (ItemID, Quantity) VALUES (@id, @qty);";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@id", i.ItemID);
+                    cmd.Parameters.AddWithValue("@qty", i.Quantity);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+    }
+
+    public static (string playerName, DateTime createdAt)? GetSaveInfo(string saveFolder)
+    {
+        string dbPath = Path.Combine(saveFolder, "save_data.db");
+        if (!File.Exists(dbPath)) return null;
+
+        string connectionString = $"URI=file:{dbPath}";
+
+        using (var conn = new SqliteConnection(connectionString))
+        {
+            conn.Open();
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "SELECT PlayerName, CreatedAt FROM save_info LIMIT 1;";
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        string name = reader.GetString(0);
+                        string dateStr = reader.GetString(1);
+                        DateTime dt = DateTime.Parse(dateStr);
+                        return (name, dt);
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
 }

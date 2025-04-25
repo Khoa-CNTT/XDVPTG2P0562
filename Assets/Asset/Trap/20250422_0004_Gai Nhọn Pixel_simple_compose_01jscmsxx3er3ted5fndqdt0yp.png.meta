@@ -1,0 +1,340 @@
+fileFormatVersion: 2
+guid: f237b8b8b45f12a4e8e0ecc0e4696e26
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7745226597954164376
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_0"
+  - first:
+      213: 1504991758176962586
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_1"
+  - first:
+      213: -3772198009400997195
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_2"
+  - first:
+      213: 7067353812546041072
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_3"
+  - first:
+      213: -3605174908412206755
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_4"
+  - first:
+      213: 1178000578230242447
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_5"
+  - first:
+      213: -9217860621515386809
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_6"
+  - first:
+      213: -8610067007031861423
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_7"
+  - first:
+      213: -2450452360886692465
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_8"
+  - first:
+      213: 8222607271625996386
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_9"
+  - first:
+      213: -5587485422122541348
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_10"
+  - first:
+      213: -8452771100672697968
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_11"
+  - first:
+      213: 7181728799457113892
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_12"
+  - first:
+      213: -792418341725725313
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_13"
+  - first:
+      213: 8227213836782280799
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_14"
+  - first:
+      213: 6583097983273862829
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_15"
+  - first:
+      213: -7136096563314681723
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_16"
+  - first:
+      213: -1234186457950283635
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_17"
+  - first:
+      213: -4494921723732875047
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_18"
+  - first:
+      213: 5973724517177929201
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_19"
+  - first:
+      213: -1282694321146573485
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_20"
+  - first:
+      213: 1945351830882587887
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_21"
+  - first:
+      213: 6828215886803371360
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_22"
+  - first:
+      213: -1234210263773450422
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_23"
+  - first:
+      213: 2504042277323524847
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_24"
+  - first:
+      213: 226358898491303029
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_25"
+  - first:
+      213: 2979661055018219271
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_26"
+  - first:
+      213: -6961517177970829264
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_27"
+  - first:
+      213: 5794313374544590520
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_28"
+  - first:
+      213: 1327427503752137482
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_29"
+  - first:
+      213: -937862126209076515
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_30"
+  - first:
+      213: 7324904958311256915
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_31"
+  - first:
+      213: -541029012427635361
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_32"
+  - first:
+      213: 5848327559289382431
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_33"
+  - first:
+      213: -7212242934173100895
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_34"
+  - first:
+      213: 4541326083015003557
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_35"
+  - first:
+      213: -2156602431014011741
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_36"
+  - first:
+      213: 2379933405439573861
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_37"
+  - first:
+      213: 7138317157387987149
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_38"
+  - first:
+      213: -1295927986486203313
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_39"
+  - first:
+      213: -7056261699875636643
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_40"
+  - first:
+      213: -7347068327820471652
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_41"
+  - first:
+      213: -7760836186754915204
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_42"
+  - first:
+      213: -3756492679789004228
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_43"
+  - first:
+      213: 3624530200432856304
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_44"
+  - first:
+      213: -4280297805720574686
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_45"
+  - first:
+      213: 6511124625780963538
+    second: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_46"
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 720
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_0"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1024
+        width: 1024
+        height: 512
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 869e804f17d638490800000000000000
+      internalID: -7745226597954164376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_1"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 512
+        width: 1024
+        height: 512
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a184700c70ec2e410800000000000000
+      internalID: 1504991758176962586
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_2"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1024
+        height: 512
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bac73b75e576abc0800000000000000
+      internalID: -3772198009400997195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 0f0160d473d5d0d44b0f467ca192748a
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_0": -7745226597954164376
+      "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_1": 1504991758176962586
+      "20250422_0004_Gai Nh\u1ECDn Pixel_simple_compose_01jscmsxx3er3ted5fndqdt0yp_2": -3772198009400997195
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

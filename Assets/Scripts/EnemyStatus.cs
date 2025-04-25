@@ -5,16 +5,23 @@ using UnityEngine.UI;
 
 public class EnemyStatus : MonoBehaviour
 {
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip hurtSound;
     public Animator animator;
     public int maxHealth;
     public Slider healthSlider;
 
     [Header("Enemy Settings")]
-    [SerializeField] private int moneyDrop = 10; // Tiền thưởng khi giết địch
+    [SerializeField] private int moneyDrop = 10;
     private int currentHealth;
     private bool isDead = false;
-    
-    public Enemy_Behaviour enemyBehaviour; // Tham chiếu tới Enemy_Behaviour
+
+    public Enemy_Behaviour enemyBehaviour;
+
+    [Header("Potion Drop Settings")]
+    [SerializeField] private float potionDropRate = 0.3f; // Tỉ lệ rơi bình máu (0.3 = 30%)
+    [SerializeField] private GameObject healthPotionPrefab; // Prefab bình máu
 
     void Start()
     {
@@ -38,11 +45,15 @@ public class EnemyStatus : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isDead) return; // Chặn nhận damage nếu đã chết
+        if (isDead) return;
 
         currentHealth -= damage;
         animator.SetTrigger("Hurt");
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        if (audioSource != null && hurtSound != null)
+        {
+            audioSource.PlayOneShot(hurtSound);
+        }
 
         Debug.Log("Enemy took " + damage + " damage!");
 
@@ -55,6 +66,7 @@ public class EnemyStatus : MonoBehaviour
         {
             Die();
         }
+
         UpdateHealthBar();
     }
 
@@ -68,30 +80,40 @@ public class EnemyStatus : MonoBehaviour
 
     void Die()
     {
-        isDead = true; // Đánh dấu enemy đã chết
-        
-        
-        // ✅ Đặt tốc độ di chuyển về 0
+        isDead = true;
+
         if (enemyBehaviour != null)
         {
             enemyBehaviour.MoveSpeed = 0;
-            
         }
 
-        // Tắt tất cả collider
         DisableAllColliders();
-
-        // Dừng di chuyển vật lý
         StopPhysicsMovement();
 
         Debug.Log("Enemy died!");
         animator.SetBool("IsDead", true);
 
-        // Cộng tiền cho người chơi
         GameManager.Instance.AddMoney(moneyDrop);
 
-        // Hủy enemy sau 1.5 giây
+        TryDropPotion();
+
         Destroy(gameObject, 0.75f);
+    }
+
+    void TryDropPotion()
+    {
+        if (healthPotionPrefab == null)
+        {
+            Debug.LogWarning("⚠ Không gán prefab HealthPotion!");
+            return;
+        }
+
+        float roll = UnityEngine.Random.value; // giá trị từ 0 → 1
+        if (roll <= potionDropRate)
+        {
+            Instantiate(healthPotionPrefab, transform.position, Quaternion.identity);
+            Debug.Log("💧 Rơi ra 1 bình máu!");
+        }
     }
 
     void DisableAllColliders()
@@ -122,8 +144,7 @@ public class EnemyStatus : MonoBehaviour
     {
         currentHealth = maxHealth;
         isDead = false;
-        enemyBehaviour.enabled = true; // Kích hoạt lại AI
-    
+        enemyBehaviour.enabled = true;
 
         EnableAllColliders();
         EnablePhysicsMovement();

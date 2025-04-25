@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     
-    [SerializeField] private int currentMoney;
+    [SerializeField] public int currentMoney;
     public int CurrentMoney => currentMoney;
     // Thêm sự kiện khi tiền được nhặt
         public UnityEvent onMoneyPickupStart;

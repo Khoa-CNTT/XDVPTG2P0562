@@ -1,8 +1,19 @@
-[System.Serializable]
-public class SaveGame
+using System;
+using System.Collections.Generic;
+
+[Serializable]
+public class PlayerData
 {
-    public int Id;
-    public string PlayerName;
-    public string CreatedAt;
-    public float PlayTime;
+    public float PositionX;
+    public float PositionY;
+    public int CurrentHP;
+    public int PotionCount;
+}
+
+
+[Serializable]
+public class InventoryItemData
+{
+    public string ItemID;
+    public int Quantity;
 }

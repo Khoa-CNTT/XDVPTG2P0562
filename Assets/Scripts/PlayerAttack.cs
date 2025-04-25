@@ -10,10 +10,14 @@ public class PlayerAttack : MonoBehaviour
     public float attackRange = 0.5f;
     public int attackDamage = 40;
     public float attackRate = 2f;
-    public float comboTimeWindow = 0.5f; // Thời gian cửa sổ combo
+    public float comboTimeWindow = 0.5f;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip attackSFX;         // Âm thanh khi tấn công
+    [SerializeField] private AudioSource audioSource;     // Nguồn phát âm thanh
 
     private float nextAttackTime = 0f;
-     private bool isEnemyDead = false;
+    private bool isEnemyDead = false;
     private bool isAttacking = false;
     private int comboStep = 0;
     private float lastAttackTime;
@@ -24,18 +28,23 @@ public class PlayerAttack : MonoBehaviour
     {
         playerController = GetComponent<PlayerController1>();
         healthPotionSystem = GetComponent<HealthPotionSystem>();
+
+        // Tự động lấy AudioSource nếu chưa gán
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
     }
 
     void Update()
     {
         if (Time.time >= nextAttackTime)
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0) 
-            && !playerController.IsDashing() 
-            && !isAttacking 
-            && !healthPotionSystem.IsUsingPotion())
+            if (Input.GetKeyDown(KeyCode.Mouse0)
+                && !playerController.IsDashing()
+                && !isAttacking
+                && !healthPotionSystem.IsUsingPotion())
             {
-
                 HandleComboAttack();
             }
         }
@@ -43,7 +52,6 @@ public class PlayerAttack : MonoBehaviour
 
     public void HandleComboAttack()
     {
-        // Reset combo nếu quá thời gian cửa sổ combo
         if (Time.time - lastAttackTime > comboTimeWindow)
         {
             comboStep = 0;
@@ -61,37 +69,40 @@ public class PlayerAttack : MonoBehaviour
         {
             StartCoroutine(stopMovement());
             StartCoroutine(PerformAttack("Attack1"));
-             // Reset combo step sau đòn tấn công thứ hai
-        }else if (comboStep == 3)
+        }
+        else if (comboStep == 3)
         {
             StartCoroutine(stopMovement());
             StartCoroutine(PerformAttack("Attack"));
             nextAttackTime = Time.time + 1f / attackRate;
-            comboStep = 1; // Reset combo step sau đòn tấn công thứ hai
+            comboStep = 1;
         }
     }
 
     IEnumerator PerformAttack(string attackTrigger)
     {
-        isAttacking = true; // Bắt đầu tấn công
-        animator.SetTrigger(attackTrigger); // Kích hoạt animation
+        isAttacking = true;
+        animator.SetTrigger(attackTrigger);
 
-        // Chờ animation hoàn thành
+        // 🔊 Phát âm thanh khi bắt đầu đánh
+        if (attackSFX != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(attackSFX);
+        }
+
         float animationLength = GetAnimationLength(attackTrigger);
         yield return new WaitForSeconds(animationLength);
 
-        isAttacking = false; // Kết thúc tấn công
+        isAttacking = false;
     }
 
-    IEnumerator stopMovement(){
+    IEnumerator stopMovement()
+    {
         playerController.canMove = false;
         yield return playerController.LockMovementDuringAttack();
         playerController.canMove = true;
-
     }
-    
 
-    // Hàm lấy độ dài của animation
     float GetAnimationLength(string animationName)
     {
         RuntimeAnimatorController ac = animator.runtimeAnimatorController;
@@ -102,7 +113,7 @@ public class PlayerAttack : MonoBehaviour
                 return clip.length;
             }
         }
-        return 0f; // Trả về 0 nếu không tìm thấy animation
+        return 0f;
     }
 
     public void DealDamage()
@@ -130,8 +141,6 @@ public class PlayerAttack : MonoBehaviour
 
     public bool IsAttacking()
     {
-    return isAttacking || animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack");
+        return isAttacking || animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack");
     }
-
-    
 }

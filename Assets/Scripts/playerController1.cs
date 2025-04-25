@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class PlayerController1 : MonoBehaviour
 {
+    [Header("Sound Effects")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip dashSound;
+    [SerializeField] private AudioClip walkSound;
+
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 10f;
@@ -150,10 +156,16 @@ public class PlayerController1 : MonoBehaviour
             jumpBufferCounter -= Time.deltaTime;
         }
 
+
         if ((coyoteTimeCounter > 0f || extraJumps > 0) && jumpBufferCounter > 0f)
         {
             float jumpPower = (isGrounded || currentPlatform != null) ? jumpForce : doubleJumpForce;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
+
+            if (audioSource != null && jumpSound != null)
+            {
+                audioSource.PlayOneShot(jumpSound);
+            }
 
             if (!isGrounded && currentPlatform == null)
             {
@@ -222,7 +234,10 @@ public class PlayerController1 : MonoBehaviour
             canDash = false;
             isDashCooldown = true;
             trailRenderer.emitting = true;
-
+            if (audioSource != null && dashSound != null)
+            {
+                audioSource.PlayOneShot(dashSound);
+            }
             float horizontalInput = Input.GetAxisRaw("Horizontal");
             dashingDirection = new Vector2(horizontalInput, 0f);
 
@@ -269,6 +284,12 @@ public class PlayerController1 : MonoBehaviour
         animator.SetBool("IsJumping", !isGrounded);
         animator.SetBool("IsDashing", isDashing);
         animator.SetBool("IsWallSliding", isWallSliding);
+        if (isRunning && isGrounded)
+        {
+            if (audioSource != null && walkSound != null && !audioSource.isPlaying)
+                audioSource.PlayOneShot(walkSound);
+        }
+
     }
 
     private void HandlePlatformMovement()

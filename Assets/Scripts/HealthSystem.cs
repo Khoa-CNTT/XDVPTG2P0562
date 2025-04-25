@@ -5,6 +5,8 @@ using System;
 
 public class HealthSystem : MonoBehaviour
 {
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip TakeDamageSound;
     [Header("Settings")]
     public int maxHealth = 100;
     public Animator animator;
@@ -18,8 +20,6 @@ public class HealthSystem : MonoBehaviour
     private bool isDead = false;
     private PlayerRespawn playerRespawn;
     private PlayerController1 playerController1;
-
-
 
     void Awake()
     {
@@ -53,6 +53,10 @@ public class HealthSystem : MonoBehaviour
         if (isDead) return;
 
         currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
+        if (audioSource != null && TakeDamageSound != null)
+        {
+            audioSource.PlayOneShot(TakeDamageSound);
+        }
         UpdateHealthBar();
         animator.SetTrigger("Hurt");
 
@@ -78,7 +82,7 @@ public class HealthSystem : MonoBehaviour
     {
         GameManager.Instance.OnPlayerDeath(transform.position);
         Debug.Log("Player died!");
-        if (isDead) return; // Tránh gọi nhiều lần
+        if (isDead) return;
         isDead = true;
         animator.SetBool("IsDead", true);
         playerController1.enabled = false;
@@ -134,10 +138,9 @@ public class HealthSystem : MonoBehaviour
         playerController1.enabled = true;
         EnableAllColliders();
         EnablePhysicsMovement();
-        
+
         gameObject.SetActive(true);
         UpdateHealthBar();
-        
     }
 
     public bool IsDead()
@@ -174,6 +177,15 @@ public class HealthSystem : MonoBehaviour
     public void HealToFull()
     {
         currentHealth = maxHealth;
+        UpdateHealthBar();
         Debug.Log("Health restored to full.");
     }
+
+    // ✅ Thêm hàm mới để load máu từ hệ thống save
+    public void SetHP(int value)
+    {
+        currentHealth = Mathf.Clamp(value, 0, maxHealth);
+        UpdateHealthBar();
+    }
+
 }

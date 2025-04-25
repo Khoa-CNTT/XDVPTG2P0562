@@ -4,146 +4,125 @@ using UnityEngine.UI;
 
 public class HealthPotionSystem : MonoBehaviour
 {
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip HealingSound;
     [Header("Settings")]
-    [SerializeField] private int maxPotions = 3; // Số bình tối đa
-    [SerializeField] private int healAmount = 50; // Lượng máu hồi mỗi bình
-    [SerializeField] private KeyCode useKey = KeyCode.E; // Phím sử dụng bình máu
+    [SerializeField] private int maxPotions = 3;
+    [SerializeField] private int startingPotion;
+    [SerializeField] private int healAmount = 50;
+    [SerializeField] private KeyCode useKey = KeyCode.E;
 
     [Header("UI")]
-    [SerializeField] private TextMeshProUGUI potionCountText; // Hiển thị số bình máu
-    [SerializeField] private Image potionIconPrefab; // Icon bình máu
-    [SerializeField] private Transform potionUIContainer; // Panel chứa icon bình máu
+    [SerializeField] private TextMeshProUGUI potionCountText; // Không phải prefab, đã gán object trong scene
+    [SerializeField] private Transform potionUIContainer;     // Chứa các icon bình máu (đã có sẵn trong scene)
 
     [Header("Animation")]
-    [SerializeField] private Animator animator; // Animator của Player
+    [SerializeField] private Animator animator;
 
     private int currentPotions;
     private bool isUsingPotion = false;
     private HealthSystem healthSystem;
-    private PlayerController1 playerController; // Tham chiếu đến script di chuyển
-    private Rigidbody2D rb; // Tham chiếu đến Rigidbody2D
+    private PlayerController1 playerController;
+    private Rigidbody2D rb;
+
+    private void Awake()
+    {
+        healthSystem = GetComponent<HealthSystem>();
+        playerController = GetComponent<PlayerController1>();
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     private void Start()
     {
-        healthSystem = GetComponent<HealthSystem>(); // Lấy tham chiếu HealthSystem
-        playerController = GetComponent<PlayerController1>(); // Lấy tham chiếu PlayerController1
-        rb = GetComponent<Rigidbody2D>(); // Lấy tham chiếu Rigidbody2D
-        currentPotions = maxPotions;
-        InitializePotionUI();
+        currentPotions = startingPotion;
+        UpdatePotionUI();
     }
 
     private void Update()
     {
-        // Chỉ cho phép sử dụng bình máu nếu không đang tấn công
-        if (Input.GetKeyDown(useKey)) // Kiểm tra nhấn phím E
+        if (Input.GetKeyDown(useKey))
         {
             UsePotion();
         }
+
+        // // DEBUG: Nhấn P để thêm bình
+        // if (Input.GetKeyDown(KeyCode.P))
+        // {
+        //     AddPotion(1);
+        // }
     }
 
-    // Khởi tạo UI bình máu
-    private void InitializePotionUI()
-    {
-        if (potionUIContainer != null && potionIconPrefab != null)
-        {
-            for (int i = 0; i < maxPotions; i++)
-            {
-                Image icon = Instantiate(potionIconPrefab, potionUIContainer);
-                icon.gameObject.SetActive(i < currentPotions); // Hiển thị số bình hiện có
-            }
-        }
-        UpdatePotionUI();
-    }
-
-    // Sử dụng bình máu
-    private void UsePotion()
-    {
-        if (CanUsePotion())
-        {
-            isUsingPotion = true;
-            currentPotions--;
-            UpdatePotionUI();
-
-            // Dừng di chuyển ngay lập tức
-            if (playerController != null)
-            {
-                playerController.canMove = false;
-            }
-
-            // Đặt vận tốc về 0 để dừng nhân vật
-            if (rb != null)
-            {
-                rb.linearVelocity = Vector2.zero;
-            }
-
-            // Kích hoạt animation uống bình máu
-            animator.SetBool("IsUsingPotion", true); // Sử dụng bool thay vì trigger
-
-            // Hồi máu cho nhân vật
-            healthSystem.TakeDamage(-healAmount); // Truyền số âm để hồi máu
-
-            // Reset trạng thái sau khi sử dụng
-            Invoke(nameof(ResetPotionUse), 1f); // Thời gian tùy chỉnh
-        }
-    }
-
-    // Kiểm tra có thể sử dụng bình máu không
-    private bool CanUsePotion()
-    {
-        // Kiểm tra các điều kiện:
-        // 1. Còn bình máu
-        // 2. Không đang sử dụng bình
-        // 3. Máu chưa đầy
-        // 4. Đang đứng trên mặt đất
-        // 5. Không đang tấn công
-        return currentPotions > 0 
-            && !isUsingPotion 
-            && healthSystem.currentHealth < healthSystem.maxHealth
-            && playerController.IsGrounded() // Kiểm tra đang đứng trên mặt đất
-            && !playerController.IsAttacking(); // Kiểm tra không đang tấn công
-    }
-
-    // Reset trạng thái sử dụng bình máu
-    private void ResetPotionUse()
-    {
-        isUsingPotion = false;
-
-        // Kết thúc animation
-        animator.SetBool("IsUsingPotion", false);
-
-        // Bật lại di chuyển
-        if (playerController != null)
-        {
-            playerController.canMove = true;
-        }
-    }
-
-    // Cập nhật UI bình máu
     private void UpdatePotionUI()
     {
+        // Cập nhật số đếm text
         if (potionCountText != null)
         {
-            potionCountText.text = $"{currentPotions}";
+            potionCountText.gameObject.SetActive(true);
+            potionCountText.text = currentPotions.ToString();
         }
 
+        // Cập nhật icon hiển thị (giả sử có sẵn icon trong scene - không xoá/gán lại)
         if (potionUIContainer != null)
         {
             for (int i = 0; i < potionUIContainer.childCount; i++)
             {
-                potionUIContainer.GetChild(i).gameObject.SetActive(i < currentPotions);
+                bool show = i < currentPotions;
+                potionUIContainer.GetChild(i).gameObject.SetActive(show);
             }
         }
     }
 
-    // Thêm bình máu (có thể gọi từ script khác)
+    private bool CanUsePotion()
+    {
+        return currentPotions > 0 &&
+               !isUsingPotion &&
+               healthSystem.currentHealth < healthSystem.maxHealth &&
+               playerController != null &&
+               playerController.IsGrounded() &&
+               !playerController.IsAttacking();
+    }
+
+    private void UsePotion()
+    {
+        if (!CanUsePotion()) return;
+
+        isUsingPotion = true;
+        currentPotions--;
+        UpdatePotionUI();
+
+        if (playerController != null) playerController.canMove = false;
+        if (rb != null) rb.linearVelocity = Vector2.zero;
+
+        animator.SetBool("IsUsingPotion", true);
+        if (audioSource != null && HealingSound != null)
+        {
+            audioSource.PlayOneShot(HealingSound);
+        }
+        healthSystem.TakeDamage(-healAmount); // Hồi máu
+
+        Invoke(nameof(ResetPotionUse), 1f);
+    }
+
+    private void ResetPotionUse()
+    {
+        isUsingPotion = false;
+        animator.SetBool("IsUsingPotion", false);
+        if (playerController != null) playerController.canMove = true;
+    }
+
     public void AddPotion(int amount)
     {
         currentPotions = Mathf.Clamp(currentPotions + amount, 0, maxPotions);
         UpdatePotionUI();
     }
-    public bool IsUsingPotion()
+
+    public int GetCurrentPotionCount() => currentPotions;
+
+    public void SetPotionCount(int count)
     {
-        // Replace with actual logic to determine if a potion is being used
-        return false;
+        currentPotions = Mathf.Clamp(count, 0, maxPotions);
+        UpdatePotionUI();
     }
+
+    public bool IsUsingPotion() => isUsingPotion;
 }

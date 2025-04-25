@@ -421,6 +421,14 @@ PrefabInstance:
       propertyPath: loadButton
       value: 
       objectReference: {fileID: 1425966977}
+    - target: {fileID: 2631440156067960824, guid: dd87a54d0a491064d8bc2f7518501574, type: 3}
+      propertyPath: saveIDText
+      value: 
+      objectReference: {fileID: 2110772608}
+    - target: {fileID: 2631440156067960824, guid: dd87a54d0a491064d8bc2f7518501574, type: 3}
+      propertyPath: backgroundImage
+      value: 
+      objectReference: {fileID: 808107199}
     - target: {fileID: 5687302526262735447, guid: dd87a54d0a491064d8bc2f7518501574, type: 3}
       propertyPath: m_text
       value: 
@@ -1536,17 +1544,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 521340104}
   m_CullTransparentMesh: 1
---- !u!114 &561583302 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 817998647917019703, guid: dd87a54d0a491064d8bc2f7518501574, type: 3}
-  m_PrefabInstance: {fileID: 87259001}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &574972661
 GameObject:
   m_ObjectHideFlags: 0
@@ -2352,6 +2349,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 771837927}
   m_CullTransparentMesh: 1
+--- !u!114 &808107199 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6930723155026107268, guid: dd87a54d0a491064d8bc2f7518501574, type: 3}
+  m_PrefabInstance: {fileID: 87259001}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &817704500
 GameObject:
   m_ObjectHideFlags: 0
@@ -2561,7 +2569,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -0.000030517578, y: -0.0000076293945}
-  m_SizeDelta: {x: -184, y: 121}
+  m_SizeDelta: {x: -430.41, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &923748700
 MonoBehaviour:
@@ -2577,9 +2585,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding:
     m_Left: 0
-    m_Right: 50
+    m_Right: -160
     m_Top: 10
-    m_Bottom: -100
+    m_Bottom: -220
   m_ChildAlignment: 1
   m_Spacing: 10
   m_ChildForceExpandWidth: 0
@@ -2727,17 +2735,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1181136189}
   m_CullTransparentMesh: 1
---- !u!114 &1200319914 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6558234910166960176, guid: dd87a54d0a491064d8bc2f7518501574, type: 3}
-  m_PrefabInstance: {fileID: 87259001}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1201937708
 GameObject:
   m_ObjectHideFlags: 0
@@ -3447,7 +3444,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1425966978}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1250825818}
+        m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+        m_MethodName: LoadGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1425966978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3498,9 +3507,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 357060d2d1a62af47a85715952ed2475, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNameText: {fileID: 1200319914}
-  createdAtText: {fileID: 561583302}
-  playTimeText: {fileID: 2110772608}
+  folderNameText: {fileID: 0}
+  playerNameText: {fileID: 0}
+  createdTimeText: {fileID: 0}
+  backgroundImage: {fileID: 0}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  hoverColor: {r: 0.8, g: 0.8, b: 1, a: 1}
 --- !u!1 &1452364257
 GameObject:
   m_ObjectHideFlags: 0
@@ -4459,7 +4471,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1250825818}
         m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
-        m_MethodName: CloseLoadGamePanel
+        m_MethodName: CancelLoadGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
