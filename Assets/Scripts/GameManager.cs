@@ -4,23 +4,27 @@ using UnityEngine.Events;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    
+
     [SerializeField] public int currentMoney;
+
     public int CurrentMoney => currentMoney;
     // Thêm sự kiện khi tiền được nhặt
-        public UnityEvent onMoneyPickupStart;
-    
+    public UnityEvent onMoneyPickupStart;
+
     // Thêm các biến quản lý tiền rơi
     private Vector3? deathPosition = null;
     private int droppedMoney = 0;
     private GameObject moneyDropInstance = null;
     private bool isDroppingMoney = false; // Ngăn chặn gọi nhiều lần
-    
+
     public UnityEvent<int> onMoneyChanged;
     public UnityEvent<int> onMoneyPickedUp;
+    private int healthUpgradeCost = 50;
+    private int damageUpgradeCost = 70;
 
     private void Awake()
     {
+
         if (Instance == null)
         {
             Instance = this;
@@ -42,83 +46,123 @@ public class GameManager : MonoBehaviour
 
     // Hàm xử lý khi player chết
     public void OnPlayerDeath(Vector3 deathPos)
-{
-    // Nếu còn MoneyDrop cũ (chưa nhặt), hủy nó ngay lập tức
-    if (moneyDropInstance != null)
     {
-        Destroy(moneyDropInstance);
-        moneyDropInstance = null;
-        droppedMoney = 0; // Đặt lại số tiền rơi để tránh cộng dồn
-        deathPosition = null;
-    }
-
-    // Nếu player có tiền, tạo túi tiền mới
-    if (currentMoney > 0)
-    {
-        droppedMoney = currentMoney;
-        deathPosition = deathPos;
-        currentMoney = 0;
-        CreateMoneyDrop();
-        SaveMoney();
-        onMoneyChanged?.Invoke(currentMoney);
-    }
-}
-
-
-
-    
-
-   private void CreateMoneyDrop()
-{
-    // Nếu đã tồn tại một MoneyDrop, không tạo thêm
-    if (moneyDropInstance != null) return;
-
-    if (deathPosition.HasValue && droppedMoney > 0)
-    {
-        GameObject moneyDropPrefab = Resources.Load<GameObject>("MoneyDrop");
-        if (moneyDropPrefab != null)
+        // Nếu còn MoneyDrop cũ (chưa nhặt), hủy nó ngay lập tức
+        if (moneyDropInstance != null)
         {
-            moneyDropInstance = Instantiate(moneyDropPrefab, deathPosition.Value, Quaternion.identity);
-            MoneyDrop dropScript = moneyDropInstance.GetComponent<MoneyDrop>();
-            dropScript.amount = droppedMoney;
+            Destroy(moneyDropInstance);
+            moneyDropInstance = null;
+            droppedMoney = 0; // Đặt lại số tiền rơi để tránh cộng dồn
+            deathPosition = null;
+        }
+
+        // Nếu player có tiền, tạo túi tiền mới
+        if (currentMoney > 0)
+        {
+            droppedMoney = currentMoney;
+            deathPosition = deathPos;
+            currentMoney = 0;
+            CreateMoneyDrop();
+            SaveMoney();
+            onMoneyChanged?.Invoke(currentMoney);
         }
     }
-}
+
+
+
+
+
+    private void CreateMoneyDrop()
+    {
+        // Nếu đã tồn tại một MoneyDrop, không tạo thêm
+        if (moneyDropInstance != null) return;
+
+        if (deathPosition.HasValue && droppedMoney > 0)
+        {
+            GameObject moneyDropPrefab = Resources.Load<GameObject>("MoneyDrop");
+            if (moneyDropPrefab != null)
+            {
+                moneyDropInstance = Instantiate(moneyDropPrefab, deathPosition.Value, Quaternion.identity);
+                MoneyDrop dropScript = moneyDropInstance.GetComponent<MoneyDrop>();
+                dropScript.amount = droppedMoney;
+            }
+        }
+    }
 
 
     // Hàm gọi khi player hồi sinh
     public void OnPlayerRespawn()
     {
         // Chỉ tạo lại nếu thực sự có tiền chưa nhặt
-    if (droppedMoney > 0 && deathPosition.HasValue)
-    {
-        CreateMoneyDrop();
-    }
+        if (droppedMoney > 0 && deathPosition.HasValue)
+        {
+            CreateMoneyDrop();
+        }
     }
 
     public void ReclaimDroppedMoney(int amount)
-{
-    if (droppedMoney != amount) return; // Chỉ nhặt đúng số tiền rơi ra
-
-    onMoneyPickupStart?.Invoke();
-    currentMoney += amount;
-    
-    // Reset dữ liệu rơi tiền
-    droppedMoney = 0;
-    deathPosition = null;
-
-    // Hủy vật phẩm tiền rơi cũ
-    if (moneyDropInstance != null)
     {
-        Destroy(moneyDropInstance);
-        moneyDropInstance = null;
+        if (droppedMoney != amount) return; // Chỉ nhặt đúng số tiền rơi ra
+
+        onMoneyPickupStart?.Invoke();
+        currentMoney += amount;
+
+        // Reset dữ liệu rơi tiền
+        droppedMoney = 0;
+        deathPosition = null;
+
+        // Hủy vật phẩm tiền rơi cũ
+        if (moneyDropInstance != null)
+        {
+            Destroy(moneyDropInstance);
+            moneyDropInstance = null;
+        }
+
+        SaveMoney();
+        onMoneyChanged?.Invoke(currentMoney);
+        onMoneyPickedUp?.Invoke(amount);
+    }
+    public void TryUpgradeHealth(HealthSystem healthSystem)
+    {
+        if (currentMoney >= healthUpgradeCost)
+        {
+            currentMoney -= healthUpgradeCost;
+            healthSystem.UpgradeMaxHealth(20); // tăng thêm 20 máu
+            healthUpgradeCost += 50; // mỗi lần tốn thêm 50
+            SaveMoney();
+            onMoneyChanged?.Invoke(currentMoney);
+        }
     }
 
-    SaveMoney();
-    onMoneyChanged?.Invoke(currentMoney);
-    onMoneyPickedUp?.Invoke(amount);
-}
+    public void TryUpgradeDamage(PlayerAttack playerAttack)
+    {
+        if (currentMoney >= damageUpgradeCost)
+        {
+            currentMoney -= damageUpgradeCost;
+            playerAttack.IncreaseDamage(5); // tăng 5 damage
+            damageUpgradeCost += 60; // mỗi lần tốn thêm 60
+            SaveMoney();
+            onMoneyChanged?.Invoke(currentMoney);
+        }
+    }
+    public void UpgradeMaxHealth(HealthSystem healthSystem)
+    {
+        if (healthSystem != null)
+        {
 
+            healthSystem.UpgradeMaxHealth(20);
+            currentMoney -= 50; // Giảm tiền sau mỗi lần nâng cấp
+        }
+    }
+
+    public void IncreaseDamage(PlayerAttack playerAttack)
+    {
+        if (playerAttack != null)
+        {
+            playerAttack.IncreaseDamage(10); // Gọi hàm không tham số
+            currentMoney -= 50; // Giảm tiền sau mỗi lần nâng cấp
+        }
+    }
 
     private void SaveMoney()
     {
@@ -141,4 +185,5 @@ public class GameManager : MonoBehaviour
     {
         return currentMoney;
     }
+
 }

@@ -4,26 +4,42 @@ using UnityEngine.UI;
 
 public class HealthBarScript : MonoBehaviour
 {
-
+    [Header("UI References")]
     public Slider healthBarSlider;
     public TextMeshProUGUI healthBarValueText;
 
-    public int maxHealth;
-    public int currentHealth;
-    void Start()
+    [Header("Reference to HealthSystem")]
+    [SerializeField] private HealthSystem healthSystem;
+
+    private void Start()
     {
-        currentHealth = maxHealth;
+        if (healthSystem == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                healthSystem = player.GetComponent<HealthSystem>();
+            }
+        }
+
+        if (healthSystem != null)
+        {
+            healthSystem.onHealthChanged.AddListener(UpdateHealthBar);
+            UpdateHealthBar(); // Gọi lần đầu
+        }
+        else
+        {
+            Debug.LogError("HealthSystem not assigned to HealthBarScript!");
+        }
     }
 
-    void Update()
+    private void UpdateHealthBar()
     {
-        healthBarValueText.text = currentHealth.ToString() + "/" + maxHealth.ToString();
+        int current = healthSystem.currentHealth;
+        int max = healthSystem.maxHealth;
 
-        healthBarSlider.value = currentHealth;
-        healthBarSlider.maxValue = maxHealth;
+        healthBarSlider.maxValue = max;
+        healthBarSlider.value = current;
+        healthBarValueText.text = $"{current}/{max}";
     }
-
-
-
-    
 }

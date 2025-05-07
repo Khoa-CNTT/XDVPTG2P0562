@@ -11,6 +11,9 @@ public class MenuNavigation : MonoBehaviour
     private int currentIndex = 0; // Vị trí hiện tại của menu
     private Button currentButton; // Nút đang được chọn
     private GameObject currentBorder; // Viền sáng đang hiển thị
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip ClickSound;
+
 
     void Start()
     {
@@ -70,6 +73,7 @@ public class MenuNavigation : MonoBehaviour
 
     void MoveBorder(Button newButton)
     {
+
         if (currentBorder != null)
         {
             currentBorder.SetActive(false);
@@ -77,7 +81,11 @@ public class MenuNavigation : MonoBehaviour
 
         currentButton = newButton;
         currentBorder = currentButton.transform.Find("SelectHover").gameObject;
+        if (audioSource != null && ClickSound != null)
+        {
+            audioSource.PlayOneShot(ClickSound);
+        }
         currentBorder.SetActive(true);
     }
-    
+
 }

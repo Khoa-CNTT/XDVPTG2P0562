@@ -9,17 +9,31 @@ public class PauseMenu : MonoBehaviour
     public Button saveButton;
     public Button returnButton;
     private bool isPaused = false;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip toggleSound;
+    [SerializeField] private AudioClip ClickSound;
+
+
 
     void Start()
     {
         pauseUI?.SetActive(false);
         saveButton?.onClick.AddListener(SaveGame);
         returnButton?.onClick.AddListener(ReturnToTitle);
+
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) TogglePause();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (audioSource != null && toggleSound != null)
+            {
+                audioSource.PlayOneShot(toggleSound);
+            }
+            TogglePause();
+        }
+
     }
 
     void TogglePause()
@@ -29,8 +43,13 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = isPaused ? 0 : 1;
     }
 
+
     void SaveGame()
     {
+        if (audioSource != null && ClickSound != null)
+        {
+            audioSource.PlayOneShot(ClickSound);
+        }
         string saveFolder = PlayerPrefs.GetString("CurrentSaveFolder", "");
         if (string.IsNullOrEmpty(saveFolder))
         {
@@ -67,6 +86,10 @@ public class PauseMenu : MonoBehaviour
 
     void ReturnToTitle()
     {
+        if (audioSource != null && ClickSound != null)
+        {
+            audioSource.PlayOneShot(ClickSound);
+        }
         Time.timeScale = 1;
         SceneManager.LoadScene("TitleMenu");
     }

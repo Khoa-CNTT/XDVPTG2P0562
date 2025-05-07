@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
@@ -10,6 +9,7 @@ public class Bonfire : MonoBehaviour
     [SerializeField] private GameObject interactPrompt;
     [SerializeField] private ParticleSystem bonfireEffect;
     [SerializeField] private AudioClip bonfireSound;
+    [SerializeField] private UpgradeMenuUI upgradeMenuUI; // Tham chiếu tới UI nâng cấp
 
     private bool isActivated = false;
     private bool isInteracting = false;
@@ -23,7 +23,7 @@ public class Bonfire : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && !isActivated)
+        if (collision.CompareTag("Player"))
         {
             if (interactPrompt != null) interactPrompt.SetActive(true);
             isInteracting = true;
@@ -41,7 +41,7 @@ public class Bonfire : MonoBehaviour
 
     private void Update()
     {
-        if (isInteracting && !isActivated && Input.GetKeyDown(KeyCode.E))
+        if (isInteracting && Input.GetKeyDown(KeyCode.E))
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player == null) return;
@@ -62,10 +62,17 @@ public class Bonfire : MonoBehaviour
 
     private void ActivateBonfire(Vector2 playerPos, HealthSystem health, HealthPotionSystem potions, PlayerRespawn respawn)
     {
+        FindObjectOfType<SkillUpgradeManager>()?.OpenSkillPanel();
+
+        if (isActivated) return;
         isActivated = true;
 
-        if (bonfireEffect != null) bonfireEffect.Play();
-        if (bonfireSound != null && audioSource != null) audioSource.PlayOneShot(bonfireSound);
+        // Hiệu ứng
+        bonfireEffect?.Play();
+        if (bonfireSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(bonfireSound);
+        }
 
         // Gán điểm hồi sinh
         respawn.SetRespawnPosition(respawnPoint.position);
@@ -92,9 +99,39 @@ public class Bonfire : MonoBehaviour
             Debug.Log($"💾 Game saved at bonfire → {saveFolder}");
         }
 
-        ResetScene();
+
+
+        // Mở UI nâng cấp nếu có
+        if (upgradeMenuUI != null)
+        {
+            upgradeMenuUI.Show();
+        }
+        else
+        {
+            Debug.LogWarning("⚠ Không có UI nâng cấp được gán! Reset scene luôn.");
+            ResetScene(); // fallback
+        }
+    }
+    public void ActivateFromUI()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return;
+
+        var healthSystem = player.GetComponent<HealthSystem>();
+        var potionSystem = player.GetComponent<HealthPotionSystem>();
+        var respawnSystem = player.GetComponent<PlayerRespawn>();
+
+        if (healthSystem == null || potionSystem == null || respawnSystem == null)
+        {
+            Debug.LogError("Không tìm thấy HealthSystem, PotionSystem hoặc RespawnSystem!");
+            return;
+        }
+
+        ActivateBonfire(player.transform.position, healthSystem, potionSystem, respawnSystem);
     }
 
+
+    // Gọi thủ công từ UI khi người chơi thoát menu nâng cấp
     private void ResetScene()
     {
         string scene = SceneManager.GetActiveScene().name;

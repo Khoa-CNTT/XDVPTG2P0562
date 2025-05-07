@@ -28,6 +28,9 @@ public class PlayerAttack : MonoBehaviour
     {
         playerController = GetComponent<PlayerController1>();
         healthPotionSystem = GetComponent<HealthPotionSystem>();
+        int dmgLevel = PlayerPrefs.GetInt("DMG_Level", 0);
+        attackDamage += dmgLevel * 5;
+
 
         // Tự động lấy AudioSource nếu chưa gán
         if (audioSource == null)
@@ -143,4 +146,11 @@ public class PlayerAttack : MonoBehaviour
     {
         return isAttacking || animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack");
     }
+    // PlayerAttack.cs
+    public void IncreaseDamage(int amount)
+    {
+        attackDamage += amount;  // Tăng damage
+        Debug.Log("Attack damage increased by " + amount + ". New attack damage: " + attackDamage);
+    }
+
 }

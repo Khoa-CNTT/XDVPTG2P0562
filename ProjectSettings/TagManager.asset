@@ -66,6 +66,9 @@ TagManager:
   - name: Player
     uniqueID: 662548047
     locked: 0
+  - name: Arrow
+    uniqueID: 3320576843
+    locked: 0
   - name: Enemy
     uniqueID: 325442119
     locked: 0

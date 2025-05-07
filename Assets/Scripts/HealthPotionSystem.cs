@@ -7,8 +7,9 @@ public class HealthPotionSystem : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip HealingSound;
     [Header("Settings")]
-    [SerializeField] private int maxPotions = 3;
-    [SerializeField] private int startingPotion;
+    [SerializeField] private int maxPotions = 8;         // Tối đa 8 bình
+
+    [SerializeField] private int startingPotion = 3;     // Bắt đầu với 3 bình
     [SerializeField] private int healAmount = 50;
     [SerializeField] private KeyCode useKey = KeyCode.E;
 
@@ -24,6 +25,7 @@ public class HealthPotionSystem : MonoBehaviour
     private HealthSystem healthSystem;
     private PlayerController1 playerController;
     private Rigidbody2D rb;
+    private bool loadedFromSave = false;
 
     private void Awake()
     {
@@ -34,8 +36,12 @@ public class HealthPotionSystem : MonoBehaviour
 
     private void Start()
     {
-        currentPotions = startingPotion;
-        UpdatePotionUI();
+        if (!loadedFromSave)
+        {
+            currentPotions = startingPotion; // ✅ Chỉ dùng default nếu không load từ Save
+        }
+
+        UpdatePotionUI(); // Luôn update UI
     }
 
     private void Update()
@@ -98,7 +104,7 @@ public class HealthPotionSystem : MonoBehaviour
         {
             audioSource.PlayOneShot(HealingSound);
         }
-        healthSystem.TakeDamage(-healAmount); // Hồi máu
+        healthSystem.TakeDamage(-healAmount);
 
         Invoke(nameof(ResetPotionUse), 1f);
     }
@@ -120,6 +126,7 @@ public class HealthPotionSystem : MonoBehaviour
 
     public void SetPotionCount(int count)
     {
+        loadedFromSave = true;
         currentPotions = Mathf.Clamp(count, 0, maxPotions);
         UpdatePotionUI();
     }

@@ -58,4 +58,5 @@ public class InventoryManager : MonoBehaviour
         if (InventoryUI.Instance != null)
             InventoryUI.Instance.Refresh();
     }
+
 }

@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using UnityEngine.Events;
+
 
 public class HealthSystem : MonoBehaviour
 {
@@ -20,16 +22,20 @@ public class HealthSystem : MonoBehaviour
     private bool isDead = false;
     private PlayerRespawn playerRespawn;
     private PlayerController1 playerController1;
+    public UnityEvent onHealthChanged;
 
     void Awake()
     {
         playerController1 = GetComponent<PlayerController1>();
         playerRespawn = GetComponent<PlayerRespawn>();
+        if (onHealthChanged == null)
+            onHealthChanged = new UnityEvent();
 
         if (playerRespawn == null)
-        {
             Debug.LogError("PlayerRespawn component not found!");
-        }
+
+        int hpLevel = PlayerPrefs.GetInt("HP_Level", 0);
+        maxHealth += hpLevel * 20;
 
         currentHealth = maxHealth;
         InitializeHealthBar();
@@ -53,6 +59,7 @@ public class HealthSystem : MonoBehaviour
         if (isDead) return;
 
         currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
+        onHealthChanged.Invoke();
         if (audioSource != null && TakeDamageSound != null)
         {
             audioSource.PlayOneShot(TakeDamageSound);
@@ -187,5 +194,22 @@ public class HealthSystem : MonoBehaviour
         currentHealth = Mathf.Clamp(value, 0, maxHealth);
         UpdateHealthBar();
     }
+    // Hàm nâng cấp máu tối đa
+    // Phương thức nâng cấp max health, không cần tham số
+    public void UpgradeMaxHealth(int amount)
+    {
+        maxHealth += amount;  // Tăng maxHealth lên theo amount
+        currentHealth = maxHealth;  // Đảm bảo currentHealth không vượt quá maxHealth
+        Debug.Log("Max Health upgraded! New max health: " + maxHealth);
+        onHealthChanged.Invoke();
+    }
+
+
+    // // Hàm hồi phục máu đầy
+    // public void HealToFull()
+    // {
+    //     currentHealth = maxHealth; // Hồi phục máu đầy
+    //     Debug.Log("Health restored to full!");
+    // }
 
 }

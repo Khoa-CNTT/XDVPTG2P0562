@@ -16,6 +16,8 @@ public class SaveSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] private Image backgroundImage;
     [SerializeField] private Color normalColor = Color.white;
     [SerializeField] private Color hoverColor = new Color(0.8f, 0.8f, 1f);
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip ClickSound;
 
     private string saveFolderPath;
 
@@ -53,12 +55,20 @@ public class SaveSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (audioSource != null && ClickSound != null)
+        {
+            audioSource.PlayOneShot(ClickSound);
+        }
         if (backgroundImage != null)
             backgroundImage.color = hoverColor;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (audioSource != null && ClickSound != null)
+        {
+            audioSource.PlayOneShot(ClickSound);
+        }
         if (backgroundImage != null)
             backgroundImage.color = normalColor;
     }
@@ -66,6 +76,10 @@ public class SaveSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerClick(PointerEventData eventData)
     {
         if (string.IsNullOrEmpty(saveFolderPath)) return;
+        if (audioSource != null && ClickSound != null)
+        {
+            audioSource.PlayOneShot(ClickSound);
+        }
 
         Debug.Log($"📂 Loading game from: {saveFolderPath}");
         GameLoader.LoadGame(saveFolderPath);

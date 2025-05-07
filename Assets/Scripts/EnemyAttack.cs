@@ -19,8 +19,8 @@ public class EnemyAttack : MonoBehaviour
 
         // Phát hiện player bằng OverlapCircle
         Collider2D player = Physics2D.OverlapCircle(
-            transform.position, 
-            detectionRange, 
+            transform.position,
+            detectionRange,
             playerLayers
         );
 
@@ -51,17 +51,17 @@ public class EnemyAttack : MonoBehaviour
         if (isPlayerDead) return;
 
         Collider2D[] hitPlayers = Physics2D.OverlapCircleAll(
-            attackPoint.position, 
-            attackRange, 
+            attackPoint.position,
+            attackRange,
             playerLayers
         );
 
         foreach (Collider2D player in hitPlayers)
         {
-            HealthSystem healthSystem = player.GetComponent<HealthSystem>(); // Sửa dòng 62
+            HealthSystem healthSystem = player.GetComponent<HealthSystem>();
             if (healthSystem != null && !healthSystem.IsDead())
             {
-                // Gọi hàm TakeDamage từ HealthSystem
+
                 healthSystem.TakeDamage(attackDamage);
             }
             else

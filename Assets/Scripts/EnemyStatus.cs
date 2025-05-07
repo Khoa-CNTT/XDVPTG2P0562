@@ -55,7 +55,6 @@ public class EnemyStatus : MonoBehaviour
             audioSource.PlayOneShot(hurtSound);
         }
 
-        Debug.Log("Enemy took " + damage + " damage!");
 
         if (healthSlider != null)
         {
@@ -104,15 +103,15 @@ public class EnemyStatus : MonoBehaviour
     {
         if (healthPotionPrefab == null)
         {
-            Debug.LogWarning("⚠ Không gán prefab HealthPotion!");
+
             return;
         }
 
-        float roll = UnityEngine.Random.value; // giá trị từ 0 → 1
+        float roll = UnityEngine.Random.value;
         if (roll <= potionDropRate)
         {
             Instantiate(healthPotionPrefab, transform.position, Quaternion.identity);
-            Debug.Log("💧 Rơi ra 1 bình máu!");
+
         }
     }
 

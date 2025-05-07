@@ -1,55 +1,53 @@
 using UnityEngine;
 
-public class MovingPlatform : MonoBehaviour
+public class MovingPlatformBasic : MonoBehaviour
 {
-    public Transform[] waypoints;
-    public float speed = 2f;
-    public float waitTime = 0.5f;
+    [Header("Movement Settings")]
+    public Vector2 moveDirection = Vector2.right; // Hướng di chuyển
+    public float moveDistance = 3f;               // Khoảng cách cần di chuyển
+    public float moveSpeed = 2f;                   // Tốc độ di chuyển
 
-    private int currentIndex = 0;
-    private float waitCounter = 0f;
-    private bool isWaiting = false;
+    private Vector2 startPos;
+    private Vector2 targetPos;
+    private bool movingToTarget = true;
     private Rigidbody2D rb;
 
     void Start()
     {
+        startPos = transform.position;
+        targetPos = startPos + moveDirection.normalized * moveDistance;
         rb = GetComponent<Rigidbody2D>();
-        if (waypoints.Length > 0) transform.position = waypoints[0].position;
     }
 
     void FixedUpdate()
     {
-        if (waypoints.Length < 2) return;
-
-        if (isWaiting)
+        if (movingToTarget)
         {
-            waitCounter += Time.deltaTime;
-            if (waitCounter >= waitTime) isWaiting = false;
-            return;
+            rb.MovePosition(Vector2.MoveTowards(rb.position, targetPos, moveSpeed * Time.fixedDeltaTime));
+            if (Vector2.Distance(rb.position, targetPos) < 0.05f)
+                movingToTarget = false;
         }
-
-        Vector2 newPos = Vector2.MoveTowards(rb.position, waypoints[currentIndex].position, speed * Time.fixedDeltaTime);
-        rb.MovePosition(newPos);
-
-        if (Vector2.Distance(rb.position, waypoints[currentIndex].position) < 0.01f)
+        else
         {
-            currentIndex = (currentIndex + 1) % waypoints.Length;
-            isWaiting = true;
-            waitCounter = 0f;
+            rb.MovePosition(Vector2.MoveTowards(rb.position, startPos, moveSpeed * Time.fixedDeltaTime));
+            if (Vector2.Distance(rb.position, startPos) < 0.05f)
+                movingToTarget = true;
         }
     }
-
-    void OnDrawGizmos()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (waypoints != null && waypoints.Length > 1)
+        if (collision.gameObject.CompareTag("Player"))
         {
-            Gizmos.color = Color.blue;
-            for (int i = 0; i < waypoints.Length - 1; i++)
-            {
-                Gizmos.DrawLine(waypoints[i].position, waypoints[i + 1].position);
-                Gizmos.DrawSphere(waypoints[i].position, 0.1f);
-            }
-            Gizmos.DrawSphere(waypoints[waypoints.Length - 1].position, 0.1f);
+            collision.transform.SetParent(transform);
         }
     }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.transform.SetParent(null);
+        }
+    }
+
 }

@@ -22,28 +22,32 @@ public static class SaveManager
             {
                 cmd.CommandText = @"
                     CREATE TABLE IF NOT EXISTS save_info (
+                        SaveID INTEGER PRIMARY KEY AUTOINCREMENT,
                         PlayerName TEXT,
                         CreatedAt TEXT
                     );
-                   CREATE TABLE IF NOT EXISTS player_data (
-                    PositionX REAL,
-                    PositionY REAL,
-                    CurrentHP INTEGER,
-                    PotionCount INTEGER
+                    CREATE TABLE IF NOT EXISTS player_data (
+                        ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                        PositionX REAL,
+                        PositionY REAL,
+                        CurrentHP INTEGER,
+                        PotionCount INTEGER
                     );
                     CREATE TABLE IF NOT EXISTS inventory_items (
-                        ItemID TEXT,
+                        ItemID TEXT PRIMARY KEY,
                         Quantity INTEGER
                     );
                     CREATE TABLE IF NOT EXISTS money_data (
+                        ID INTEGER PRIMARY KEY AUTOINCREMENT,
                         Amount INTEGER
                     );
                     CREATE TABLE IF NOT EXISTS equipped_items (
-                        Slot TEXT,
+                        Slot TEXT PRIMARY KEY,
                         ItemID TEXT
                     );
                     CREATE TABLE IF NOT EXISTS potion_data (
-                    PotionCount INTEGER
+                        ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                        PotionCount INTEGER
                     );
                     DELETE FROM save_info;
                     INSERT INTO save_info (PlayerName, CreatedAt)
@@ -181,8 +185,6 @@ public static class SaveManager
             }
         }
     }
-
-
 
     public static Dictionary<string, string> LoadEquippedItems(string saveFolder)
     {

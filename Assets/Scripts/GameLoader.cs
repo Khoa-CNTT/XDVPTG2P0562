@@ -30,9 +30,14 @@ public class GameLoader : MonoBehaviour
             health.SetHP(playerData.CurrentHP);
 
         // Đặt bình máu
-        var potions = player.GetComponent<HealthPotionSystem>();
-        if (potions != null)
-            potions.SetPotionCount(playerData.PotionCount);
+        if (player != null)
+        {
+            HealthPotionSystem potionSystem = player.GetComponent<HealthPotionSystem>();
+            if (potionSystem != null)
+            {
+                potionSystem.SetPotionCount(playerData.PotionCount); // ⬅️ Gán đúng ở đây!
+            }
+        }
 
         // Load inventory
         // InventoryManager.Instance?.LoadFromSaveData(inventory);
